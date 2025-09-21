@@ -12,8 +12,8 @@ git clone https://github.com/eandmsz/YogaBooking;cd YogaBooking
 
 docker build -t docker.io/eandmsz/booking-service:2.0.0 services/booking-service
 docker push docker.io/eandmsz/booking-service:2.0.0
-docker build -t docker.io/eandmsz/booking-worker:2.0.0 services/booking-worker
-docker push docker.io/eandmsz/booking-worker:2.0.0
+docker build -t docker.io/eandmsz/booking-worker:2.0.1 services/booking-worker
+docker push docker.io/eandmsz/booking-worker:2.0.1
 docker build -t docker.io/eandmsz/class-service:2.0.0 services/class-service
 docker push docker.io/eandmsz/class-service:2.0.0
 ```

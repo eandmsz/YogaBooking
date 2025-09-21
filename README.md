@@ -39,8 +39,16 @@ echo "$(minikube ip)  classes.yoga.local booking.yoga.local" | sudo tee -a /etc/
 ```
 
 # Troubleshooting
+Check Pod logs:
 ```
 kubectl -n yoga-booker logs -f deploy/booking-service
+```
+Redeploy a service with an updated image (after pushing the updated version to Dockerhub)
+```
+kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/yoga-class-service:1.0.2
+kubectl -n yoga-booker rollout status deploy/class-service
+kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/yoga-booking-service:1.0.2
+kubectl -n yoga-booker rollout status deploy/booking-service
 ```
 
 Open:

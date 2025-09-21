@@ -43,14 +43,13 @@ kubectl apply -f YogaBooking/k8s/20-class-service.yaml
 kubectl apply -f YogaBooking/k8s/21-booking-service.yaml
 kubectl apply -f YogaBooking/k8s/30-ingress.yaml
 kubectl apply -f YogaBooking/k8s/40-networkpolicies.yaml
+kubectl get po -A
 ```
 
-## Access
-
-Add hosts pointing to your Ingress controller IP:
-
-classes.yoga.local -> <LB IP>
-booking.yoga.local -> <LB IP>
+# Adding IP address of the services to /etc/hosts so the local URLs work
+```
+echo "$(minikube ip)  classes.yoga.local booking.yoga.local" | sudo tee -a /etc/hosts
+```
 
 Open:
 - https://classes.yoga.local/admin (create classes)

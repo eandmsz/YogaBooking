@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: docker.io/eandmsz/booking-service:1.0.3
+          image: docker.io/eandmsz/booking-service:2.0.0
           ports:
             - containerPort: 8001
           env:
@@ -23,6 +23,8 @@ spec:
               value: postgresql://yoga:yoga@postgres.yoga-booker.svc.cluster.local:5432/yoga
             - name: CLASS_SERVICE_BASE_URL
               value: http://class-service.yoga-booker.svc.cluster.local:8000
+            - name: RABBITMQ_URL
+              value: amqp://rabbit:rabbit@rabbitmq.yoga-booker.svc.cluster.local:5672/%2f
           livenessProbe:
             httpGet:
               path: /health

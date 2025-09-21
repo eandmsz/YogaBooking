@@ -36,6 +36,7 @@ Note: 20 & 21 downloads the images we have uploaded above
 ```
 minikube status
 minikube start
+minikube addons enable ingress
 kubectl apply -f YogaBooking/k8s/00-namespace.yaml
 kubectl apply -f YogaBooking/k8s/10-postgres.yaml
 kubectl apply -f YogaBooking/k8s/20-class-service.yaml

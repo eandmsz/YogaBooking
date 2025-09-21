@@ -12,10 +12,10 @@ cd
 git clone https://github.com/eandmsz/YogaBooking
 cd YogaBooking
 
-docker build -t docker.io/eandmsz/class-service:1.0.2 services/class-service
-docker push docker.io/eandmsz/class-service:1.0.2
-docker build -t docker.io/eandmsz/booking-service:1.0.2 services/booking-service
-docker push docker.io/eandmsz/booking-service:1.0.2
+docker build -t docker.io/eandmsz/class-service:1.0.3 services/class-service
+docker push docker.io/eandmsz/class-service:1.0.3
+docker build -t docker.io/eandmsz/booking-service:1.0.3 services/booking-service
+docker push docker.io/eandmsz/booking-service:1.0.3
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
@@ -30,7 +30,6 @@ kubectl apply -f YogaBooking/k8s/20-class-service.yaml
 kubectl apply -f YogaBooking/k8s/21-booking-service.yaml
 kubectl apply -f YogaBooking/k8s/30-ingress.yaml
 kubectl apply -f YogaBooking/k8s/40-networkpolicies.yaml
-kubectl get pods -A
 ```
 
 # Adding IP address of the services to /etc/hosts so the local URLs work
@@ -45,11 +44,12 @@ kubectl -n yoga-booker logs -f deploy/booking-service
 ```
 Redeploying services with an updated image (after pushing the updated version to Dockerhub)
 ```
-kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:1.0.2
+kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:1.0.3
 kubectl -n yoga-booker rollout status deploy/class-service
-kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:1.0.2
+kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:1.0.3
 kubectl -n yoga-booker rollout status deploy/booking-service
-kubectl get pods -n yoga-booker
+kubectl -n yoga-booker get deploy class-service -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
+kubectl -n yoga-booker get pods
 ```
 
 Open:

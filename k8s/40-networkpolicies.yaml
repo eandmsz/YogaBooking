@@ -1,36 +1,40 @@
 apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: NetworkPolicy
 metadata:
-  name: yoga-booker
+  name: deny-db-from-all-but-apps
   namespace: yoga-booker
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
-  tls:
-    - hosts:
-        - classes.yoga.local
-        - booking.yoga.local
-      secretName: yoga-booker-tls # create with cert-manager or kubectl create tls
-  rules:
-    - host: classes.yoga.local
-      http:
-        paths:
-          - path: /(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: class-service
-                port:
-                  number: 8000
-    - host: booking.yoga.local
-      http:
-        paths:
-          - path: /(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: booking-service
-                port:
-                  number: 8001
+  podSelector:
+    matchLabels:
+      app: postgres
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: class-service
+        - podSelector:
+            matchLabels:
+              app: booking-service
+      ports:
+        - port: 5432
+          protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: no-pod-to-internet-except-dns
+  namespace: yoga-booker
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - namespaceSelector: {}
+          podSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+    - to: []

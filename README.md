@@ -49,6 +49,7 @@ kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/clas
 kubectl -n yoga-booker rollout status deploy/class-service
 kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:1.0.2
 kubectl -n yoga-booker rollout status deploy/booking-service
+kubectl get pods -n yoga-booker
 ```
 
 Open:

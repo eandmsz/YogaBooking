@@ -1,35 +1,36 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-name: yoga-booker
-namespace: yoga-booker
-annotations:
-kubernetes.io/ingress.class: nginx
-nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: yoga-booker
+  namespace: yoga-booker
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
-tls:
-- hosts:
-- classes.yoga.local
-- booking.yoga.local
-secretName: yoga-booker-tls # create with cert-manager or kubectl create tls
-rules:
-- host: classes.yoga.local
-http:
-paths:
-- path: /(.*)
-pathType: Prefix
-backend:
-service:
-name: class-service
-port:
-number: 8000
-- host: booking.yoga.local
-http:
-paths:
-- path: /(.*)
-pathType: Prefix
-backend:
-service:
-name: booking-service
-port:
-number: 8001
+  tls:
+    - hosts:
+        - classes.yoga.local
+        - booking.yoga.local
+      secretName: yoga-booker-tls # create with cert-manager or kubectl create tls
+  rules:
+    - host: classes.yoga.local
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: class-service
+                port:
+                  number: 8000
+    - host: booking.yoga.local
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: booking-service
+                port:
+                  number: 8001

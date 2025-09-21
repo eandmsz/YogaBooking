@@ -7,21 +7,15 @@ Both expose a very simple web UI (no frameworks, just HTML + fetch).
 
 # Build & push Docker images
 ```
+docker login -u eandmsz
 cd
 git clone https://github.com/eandmsz/YogaBooking
-export DOCKER_USER=eandmsz
-docker login -u $DOCKER_USER
+cd YogaBooking
 
-cd YogaBooking/services/class-service
-IMAGE=$DOCKER_USER/yoga-class-service:1.0.0
-docker build -t $IMAGE .
-docker push $IMAGE
-
-cd
-cd YogaBooking/services/booking-service
-IMAGE=$DOCKER_USER/yoga-booking-service:1.0.0
-docker build -t $IMAGE .
-docker push $IMAGE
+docker build -t docker.io/eandmsz/class-service:1.0.2 services/class-service
+docker push docker.io/eandmsz/class-service:1.0.2
+docker build -t docker.io/eandmsz/booking-service:1.0.2 services/booking-service
+docker push docker.io/eandmsz/booking-service:1.0.2
 ```
 
 # Generate the base64 strings from the sql files, so we can embed them into our 10-postgres.yaml file directly

@@ -34,6 +34,8 @@ base64 -w0 YogaBooking/db/02_bookings.sql
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
 Note: 20 & 21 downloads the images we have uploaded above
 ```
+minikube status
+minikube start
 kubectl apply -f YogaBooking/k8s/00-namespace.yaml
 kubectl apply -f YogaBooking/k8s/10-postgres.yaml
 kubectl apply -f YogaBooking/k8s/20-class-service.yaml

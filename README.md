@@ -27,20 +27,19 @@ docker push $IMAGE
 # Generate the base64 strings from the sql files, so we can embed them into our 10-postgres.yaml file directly
 ```
 cd
-cd YogaBooking/db
-openssl base64 -A -in 01_classes.sql
-openssl base64 -A -in 02_bookings.sql
+base64 -w0 YogaBooking/db/01_classes.sql
+base64 -w0 YogaBooking/db/02_bookings.sql
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
 Note: 20 & 21 downloads the images we have uploaded above
 ```
-kubectl apply -f k8s/00-namespace.yaml
-kubectl apply -f k8s/10-postgres.yaml
-kubectl apply -f k8s/20-class-service.yaml
-kubectl apply -f k8s/21-booking-service.yaml
-kubectl apply -f k8s/30-ingress.yaml
-kubectl apply -f k8s/40-networkpolicies.yaml
+kubectl apply -f YogaBooking/k8s/00-namespace.yaml
+kubectl apply -f YogaBooking/k8s/10-postgres.yaml
+kubectl apply -f YogaBooking/k8s/20-class-service.yaml
+kubectl apply -f YogaBooking/k8s/21-booking-service.yaml
+kubectl apply -f YogaBooking/k8s/30-ingress.yaml
+kubectl apply -f YogaBooking/k8s/40-networkpolicies.yaml
 ```
 
 ## Access

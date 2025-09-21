@@ -35,7 +35,6 @@ kubectl apply -f k8s/22-booking-worker.yaml
 kubectl apply -f k8s/30-ingress.yaml
 kubectl apply -f k8s/40-networkpolicies.yaml
 kubectl apply -f k8s/41-np-rabbitmq-egress.yaml
-kubectl -n yoga-booker get pods
 ```
 
 # Adding IP address of the services to /etc/hosts so the local URLs work

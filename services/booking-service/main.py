@@ -19,7 +19,7 @@ CLASS_SERVICE_BASE = os.getenv("CLASS_SERVICE_BASE_URL", "http://class-service:8
 # db pool
 pool: Optional[SimpleConnectionPool] = None
 
-app = FastAPI(title="Booking Service", version="1.0.2")
+app = FastAPI(title="Booking Service", version="1.0.3")
 app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-worker
+  namespace: yoga-booker
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: booking-worker}
+  template:
+    metadata:
+      labels: {app: booking-worker}
+    spec:
+      containers:
+        - name: worker
+          image: docker.io/<YOUR_DOCKERHUB>/yoga-booking-worker:2.0.0
+          env:
+            - name: DATABASE_URL
+              value: postgresql://yoga:yoga@postgres.yoga-booker.svc.cluster.local:5432/yoga
+            - name: CLASS_SERVICE_BASE_URL
+              value: http://class-service.yoga-booker.svc.cluster.local:8000
+            - name: RABBITMQ_URL
+              value: amqp://rabbit:rabbit@rabbitmq.yoga-booker.svc.cluster.local:5672/%2f
+          resources:
+            requests: {cpu: "50m", memory: "64Mi"}
+            limits: {cpu: "500m", memory: "256Mi"}

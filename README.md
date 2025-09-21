@@ -53,12 +53,12 @@ kubectl get pods -n yoga-booker
 ```
 
 Open:
-- https://classes.yoga.local/admin (create classes)
-- https://booking.yoga.local/ (book seats)
+- http://classes.yoga.local/admin (create classes)
+- http://booking.yoga.local/ (book seats)
 
 Swagger UIs:
-- https://classes.yoga.local/docs
-- https://booking.yoga.local/docs
+- http://classes.yoga.local/docs
+- http://booking.yoga.local/docs
 
 ## Scale
 

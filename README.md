@@ -37,6 +37,22 @@ kubectl apply -f YogaBooking/k8s/40-networkpolicies.yaml
 echo "$(minikube ip)  classes.yoga.local booking.yoga.local" | sudo tee -a /etc/hosts
 ```
 
+Open:
+- http://classes.yoga.local/admin (create classes)
+- http://booking.yoga.local/ (book seats)
+
+Swagger UIs:
+- http://classes.yoga.local/docs
+- http://booking.yoga.local/docs
+
+# Scale-out
+```
+kubectl -n yoga-booker get pods
+kubectl scale deploy class-service -n yoga-booker --replicas=3
+kubectl scale deploy booking-service -n yoga-booker --replicas=5
+kubectl -n yoga-booker get pods
+```
+
 # Troubleshooting
 Check Pod logs:
 ```
@@ -51,40 +67,12 @@ kubectl -n yoga-booker rollout status deploy/booking-service
 kubectl -n yoga-booker get deploy class-service -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
 kubectl -n yoga-booker get pods
 ```
-
-Open:
-- http://classes.yoga.local/admin (create classes)
-- http://booking.yoga.local/ (book seats)
-
-Swagger UIs:
-- http://classes.yoga.local/docs
-- http://booking.yoga.local/docs
-
-## Scale
-
-kubectl scale deploy class-service -n yoga-booker --replicas=3
-kubectl scale deploy booking-service -n yoga-booker --replicas=5
+Teardown the whole namespace:
+```
+kubectl delete namespace yoga-booker
+```
 
 
-(or enable the provided HorizontalPodAutoscaler objects)
-
-## Smoke tests
-
-# List classes (none yet)
-curl -k https://classes.yoga.local/classes
-
-# Create a class (admin token needs to match env in deployment, default "changeme")
-curl -k -X POST https://classes.yoga.local/classes \
--H 'Content-Type: application/json' \
--H 'x-admin-token: changeme' \
--d '{"title":"Yin Yoga","instructor":"Maya","start_time":"2025-10-01T18:00:00Z","capacity":12}'
-
-
-# Book a seat
-CLASS_ID=<uuid from create response>
-curl -k -X POST https://booking.yoga.local/bookings \
--H 'Content-Type: application/json' \
--d '{"class_id":"'$CLASS_ID'","name":"Alex","email":"alex@example.com"}'
 
 
 # Check bookings

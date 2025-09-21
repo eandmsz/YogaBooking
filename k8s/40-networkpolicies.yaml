@@ -38,3 +38,20 @@ spec:
         - port: 53
           protocol: UDP
     - to: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-db-from-booking-worker
+  namespace: yoga-booker
+spec:
+  podSelector:
+    matchLabels: {app: postgres}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {app: booking-worker}
+      ports:
+        - port: 5432
+          protocol: TCP

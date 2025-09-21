@@ -25,6 +25,7 @@ minikube start
 minikube addons enable ingress
 kubectl apply -f k8s/00-namespace.yaml
 kubectl apply -f k8s/10-postgres.yaml
+kubectl apply -f k8s/12-rabbitmq.yaml
 kubectl apply -f k8s/20-class-service.yaml
 kubectl apply -f k8s/21-booking-service.yaml
 kubectl apply -f k8s/30-ingress.yaml

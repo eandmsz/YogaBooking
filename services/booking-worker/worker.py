@@ -31,7 +31,7 @@ def process_message(ch, method, properties, body):
         class_id = msg["class_id"]
 
         # 1) reserve seat
-        LOG.info("Reserving seat for class_id=%s booking_id=%s", class_id, booking_id)
+        LOG.info("Reserving place for class_id=%s booking_id=%s", class_id, booking_id)
         r = requests.post(f"{CLASS_SERVICE_BASE}/classes/{class_id}/reserve",
                           json={"seats": 1}, timeout=5)
         if r.status_code != 200:

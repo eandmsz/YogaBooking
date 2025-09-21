@@ -11,12 +11,12 @@ cd
 git clone https://github.com/eandmsz/YogaBooking
 cd YogaBooking
 
-docker build -t docker.io/eandmsz/class-service:2.0.0 services/class-service
-docker push docker.io/eandmsz/class-service:2.0.0
 docker build -t docker.io/eandmsz/booking-service:2.0.0 services/booking-service
 docker push docker.io/eandmsz/booking-service:2.0.0
 docker build -t docker.io/eandmsz/booking-worker:2.0.0 services/booking-worker
 docker push docker.io/eandmsz/booking-worker:2.0.0
+docker build -t docker.io/eandmsz/class-service:2.0.0 services/class-service
+docker push docker.io/eandmsz/class-service:2.0.0
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
@@ -33,6 +33,7 @@ kubectl apply -f k8s/21-booking-service.yaml
 kubectl apply -f k8s/22-booking-worker.yaml
 kubectl apply -f k8s/30-ingress.yaml
 kubectl apply -f k8s/40-networkpolicies.yaml
+kubectl apply -f k8s/41-np-rabbitmq-egress.yaml
 kubectl -n yoga-booker get pods
 ```
 

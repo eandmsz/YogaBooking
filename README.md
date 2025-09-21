@@ -11,10 +11,12 @@ cd
 git clone https://github.com/eandmsz/YogaBooking
 cd YogaBooking
 
-docker build -t docker.io/eandmsz/class-service:1.0.3 services/class-service
-docker push docker.io/eandmsz/class-service:1.0.3
-docker build -t docker.io/eandmsz/booking-service:1.0.3 services/booking-service
-docker push docker.io/eandmsz/booking-service:1.0.3
+docker build -t docker.io/eandmsz/class-service:2.0.0 services/class-service
+docker push docker.io/eandmsz/class-service:2.0.0
+docker build -t docker.io/eandmsz/booking-service:2.0.0 services/booking-service
+docker push docker.io/eandmsz/booking-service:2.0.0
+docker build -t docker.io/eandmsz/booking-worker:2.0.0 services/booking-worker
+docker push docker.io/eandmsz/booking-worker:2.0.0
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)

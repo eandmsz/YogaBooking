@@ -65,12 +65,13 @@ kubectl -n yoga-booker get pods
 Check Pod logs:
 ```
 kubectl -n yoga-booker logs -f deploy/booking-service
+kubectl -n yoga-booker logs -f deploy/class-service
 ```
 Redeploying services with an updated image (after pushing the updated version to Dockerhub)
 ```
-kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:1.0.3
+kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:2.0.0
 kubectl -n yoga-booker rollout status deploy/class-service
-kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:1.0.3
+kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:2.0.0
 kubectl -n yoga-booker rollout status deploy/booking-service
 kubectl -n yoga-booker get deploy class-service -o jsonpath='{.spec.template.spec.containers[0].image}{"\n"}'
 kubectl -n yoga-booker get pods

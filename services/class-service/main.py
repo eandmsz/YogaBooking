@@ -19,7 +19,7 @@ ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "changeme")
 # db
 pool: Optional[SimpleConnectionPool] = None
 
-app = FastAPI(title="Class Service", version="1.0.1")
+app = FastAPI(title="Class Service", version="1.0.3")
 app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )

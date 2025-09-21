@@ -1,18 +1,22 @@
 # Yoga Booker (microservices on Kubernetes)
 
 Python FastAPI services + one PostgreSQL database.
-One service manages yoga classes (create/list/reserve/release). The other books participants and calls the class service to reserve seats. Both expose a very simple web UI (no frameworks, just HTML + fetch).
+One service manages yoga classes (create/list/reserve/release).
+The other books participants and calls the class service to reserve seats.
+Both expose a very simple web UI (no frameworks, just HTML + fetch).
 
 ## Build & push images (replace YOUR_DOCKERHUB_USERNAME)
 
-# Class service
-cd services/class-service
-export DOCKER_USER=YOUR_DOCKERHUB_USERNAME
+# Create docker images:
+cd
+git clone https://github.com/eandmsz/YogaBooking
+export DOCKER_USER=eandmsz
+
+cd YogaBooking/services/class-service
 IMAGE=$DOCKER_USER/yoga-class-service:1.0.0
 docker build -t $IMAGE .
 docker push $IMAGE
 
-# Booking service
 cd ../booking-service
 IMAGE=$DOCKER_USER/yoga-booking-service:1.0.0
 docker build -t $IMAGE .

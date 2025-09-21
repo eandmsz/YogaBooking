@@ -5,10 +5,9 @@ One service manages yoga classes (create/list/reserve/release).
 The other books participants and calls the class service to reserve seats.
 Both expose a very simple web UI (no frameworks, just HTML + fetch).
 
-## Build & push images (replace YOUR_DOCKERHUB_USERNAME)
-
-# Create docker images:
-```cd
+# Build & push DOCKER images
+```
+cd
 git clone https://github.com/eandmsz/YogaBooking
 export DOCKER_USER=eandmsz
 
@@ -22,6 +21,7 @@ IMAGE=$DOCKER_USER/yoga-booking-service:1.0.0
 docker build -t $IMAGE .
 docker push $IMAGE
 ```
+
 ## Kubernetes deploy (namespace, DB, services, ingress, policies)
 
 kubectl apply -f k8s/00-namespace.yaml

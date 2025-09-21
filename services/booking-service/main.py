@@ -7,7 +7,7 @@ from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extras import register_uuid  # add this to fix psycopg2.ProgrammingError: can't adapt type 'UUID'
 register_uuid() # (global uuid registration)
 import requests
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query # easy REST
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field

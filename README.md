@@ -41,6 +41,7 @@ echo "$(minikube ip)  classes.yoga.local booking.yoga.local" | sudo tee -a /etc/
 Open:
 - http://classes.yoga.local/admin (create classes)
 - http://booking.yoga.local/ (book seats)
+- http://booking.yoga.local/bookings?class_id= (check bookings)
 
 Swagger UIs:
 - http://classes.yoga.local/docs
@@ -72,9 +73,3 @@ Teardown the whole namespace:
 ```
 kubectl delete namespace yoga-booker
 ```
-
-
-
-
-# Check bookings
-curl -k 'https://booking.yoga.local/bookings?class_id='$CLASS_ID

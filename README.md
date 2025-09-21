@@ -24,6 +24,14 @@ docker build -t $IMAGE .
 docker push $IMAGE
 ```
 
+# Generate the base64 strings from the sql files, so we can embed them into our 10-postgres.yaml file directly
+```
+cd
+cd YogaBooking/db
+openssl base64 -A -in 01_classes.sql
+openssl base64 -A -in 02_bookings.sql
+```
+
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
 Note: 20 & 21 downloads the images we have uploaded above
 ```

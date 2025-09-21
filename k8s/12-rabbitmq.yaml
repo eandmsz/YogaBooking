@@ -25,8 +25,8 @@ spec:
         - name: rabbitmq
           image: rabbitmq:3.13-management
           ports:
-            - containerPort: 5672   # AMQP
-            - containerPort: 15672  # HTTP mgmt
+            - containerPort: 5672
+            - containerPort: 15672
           env:
             - name: RABBITMQ_DEFAULT_USER
               valueFrom: {secretKeyRef: {name: rabbitmq-secret, key: RABBITMQ_USER}}

@@ -8,11 +8,6 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - classes.yoga.local
-        - booking.yoga.local
-      secretName: yoga-booker-tls # create with cert-manager or kubectl create tls
   rules:
     - host: classes.yoga.local
       http:

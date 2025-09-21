@@ -13,7 +13,7 @@ labels: {app: booking-service}
 spec:
 containers:
 - name: app
-image: docker.io/YOUR_DOCKERHUB_USERNAME/yoga-booking-service:1.0.0
+image: docker.io/eandmsz/yoga-booking-service:1.0.0
 ports:
 - containerPort: 8001
 env:

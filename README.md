@@ -10,6 +10,7 @@ Both expose a very simple web UI (no frameworks, just HTML + fetch).
 cd
 git clone https://github.com/eandmsz/YogaBooking
 export DOCKER_USER=eandmsz
+docker login -u $DOCKER_USER
 
 cd YogaBooking/services/class-service
 IMAGE=$DOCKER_USER/yoga-class-service:1.0.0

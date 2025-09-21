@@ -1,9 +1,12 @@
-import os, json, uuid, time
+import os, json, uuid, time, logging
 import requests
 import pika
 import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extras import register_uuid
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+LOG = logging.getLogger("booking-worker")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://yoga:yoga@postgres:5432/yoga")
 CLASS_SERVICE_BASE = os.getenv("CLASS_SERVICE_BASE_URL", "http://class-service:8000")
@@ -16,34 +19,39 @@ pool = None
 def get_pool():
     global pool
     if pool is None:
+        LOG.info("Creating DB pool")
         pool = SimpleConnectionPool(minconn=1, maxconn=5, dsn=DATABASE_URL)
     return pool
 
 def process_message(ch, method, properties, body):
+    LOG.info("Received message: delivery_tag=%s len=%d", method.delivery_tag, len(body))
     try:
         msg = json.loads(body.decode("utf-8"))
         booking_id = uuid.UUID(msg["booking_id"])
         class_id = msg["class_id"]
 
         # 1) reserve seat
+        LOG.info("Reserving seat for class_id=%s booking_id=%s", class_id, booking_id)
         r = requests.post(f"{CLASS_SERVICE_BASE}/classes/{class_id}/reserve",
                           json={"seats": 1}, timeout=5)
         if r.status_code != 200:
             err = f"reserve failed: {r.status_code} {r.text}"
+            LOG.warning(err)
             update_status(booking_id, "failed", err)
             ch.basic_ack(delivery_tag=method.delivery_tag)
             return
 
         # 2) update booking -> confirmed
         update_status(booking_id, "confirmed", None)
+        LOG.info("Confirmed booking_id=%s", booking_id)
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
-        # Mark failed to avoid poison loops; in real life you might dead-letter
+        LOG.exception("Worker error")
         try:
             update_status(booking_id, "failed", f"worker error: {e}")
         except Exception:
-            pass
+            LOG.exception("Failed to mark booking failed")
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def update_status(booking_id: uuid.UUID, status: str, error: str | None):
@@ -61,23 +69,32 @@ def update_status(booking_id: uuid.UUID, status: str, error: str | None):
         get_pool().putconn(conn)
 
 def main():
+    LOG.info("Worker starting up")
     # wait for postgres & class-service at startup
-    for _ in range(30):
+    for i in range(30):
         try:
             conn = psycopg2.connect(DATABASE_URL); conn.close(); break
-        except Exception: time.sleep(1)
-    for _ in range(30):
+        except Exception:
+            time.sleep(1)
+    else:
+        LOG.error("Postgres not reachable")
+
+    for i in range(30):
         try:
             requests.get(f"{CLASS_SERVICE_BASE}/health", timeout=2); break
-        except Exception: time.sleep(1)
+        except Exception:
+            time.sleep(1)
+    else:
+        LOG.error("class-service not reachable")
 
+    LOG.info("Connecting to RabbitMQ %s", RABBITMQ_URL)
     params = pika.URLParameters(RABBITMQ_URL)
     conn = pika.BlockingConnection(params)
     ch = conn.channel()
     ch.queue_declare(queue=QUEUE_NAME, durable=True)
     ch.basic_qos(prefetch_count=10)
     ch.basic_consume(queue=QUEUE_NAME, on_message_callback=process_message, auto_ack=False)
-    print("worker ready; waiting for messages")
+    LOG.info("Worker ready; waiting for messages on queue=%s", QUEUE_NAME)
     ch.start_consuming()
 
 if __name__ == "__main__":

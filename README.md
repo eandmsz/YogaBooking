@@ -3,7 +3,6 @@
 Python FastAPI services + one PostgreSQL database.
 One service manages yoga classes (create/list/reserve/release).
 The other books participants and calls the class service to reserve seats.
-Both expose a very simple web UI (no frameworks, just HTML + fetch).
 
 # Build & push Docker images
 ```

@@ -5,18 +5,18 @@ from typing import Optional, List
 import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extras import register_uuid  # add this to fix psycopg2.ProgrammingError: can't adapt type 'UUID'
-register_uuid()  # (global registration)
+register_uuid() # (global uuid registration)
 import requests
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
-# --- config ---
+# config
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://yoga:yoga@postgres:5432/yoga")
 CLASS_SERVICE_BASE = os.getenv("CLASS_SERVICE_BASE_URL", "http://class-service:8000")
 
-# --- db pool ---
+# db pool
 pool: Optional[SimpleConnectionPool] = None
 
 app = FastAPI(title="Booking Service", version="1.0.2")
@@ -24,7 +24,7 @@ app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
-# --- models ---
+# models
 class BookingCreate(BaseModel):
     class_id: uuid.UUID
     name: str = Field(min_length=1, max_length=200)
@@ -37,7 +37,7 @@ class BookingOut(BaseModel):
     email: str
     created_at: str
 
-# --- lifecycle ---
+# lifecycle
 @app.on_event("startup")
 def startup():
     global pool
@@ -49,12 +49,12 @@ def shutdown():
     if pool:
         pool.closeall()
 
-# --- health ---
+# health
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-# --- tiny HTML (no f-strings, so braces in JS are harmless) ---
+# HTML
 INDEX_HTML = """
 <!doctype html><html><head><meta charset="utf-8"><title>Book a Class</title></head>
 <body style="font-family: system-ui; margin: 2rem; max-width: 700px;">
@@ -95,7 +95,7 @@ INDEX_HTML = """
 def booking_page():
     return HTMLResponse(INDEX_HTML)
 
-# --- helper: pass-through to class service for the UI ---
+# helper: pass-through to class service for the UI
 @app.get("/classes")
 def list_classes_passthrough():
     try:
@@ -106,7 +106,7 @@ def list_classes_passthrough():
     except requests.RequestException as e:
         raise HTTPException(502, f"class-service unreachable: {e}")
 
-# --- API ---
+# API
 @app.get("/bookings", response_model=List[BookingOut])
 def list_bookings(class_id: Optional[uuid.UUID] = Query(default=None)):
     conn = pool.getconn()

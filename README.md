@@ -66,6 +66,10 @@ Check Pod logs:
 kubectl -n yoga-booker logs -f deploy/booking-service
 kubectl -n yoga-booker logs -f deploy/class-service
 ```
+Check Pod main script:
+```
+kubectl -n yoga-booker exec booking-service-5fb49979dd-dpgxp -- cat /app/main.py
+```
 Redeploying services with an updated image (after pushing the updated version to Dockerhub)
 ```
 kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:2.0.0

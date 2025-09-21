@@ -24,12 +24,13 @@ Note: 20 & 21 downloads the images we have uploaded above
 minikube status
 minikube start
 minikube addons enable ingress
-kubectl apply -f YogaBooking/k8s/00-namespace.yaml
-kubectl apply -f YogaBooking/k8s/10-postgres.yaml
-kubectl apply -f YogaBooking/k8s/20-class-service.yaml
-kubectl apply -f YogaBooking/k8s/21-booking-service.yaml
-kubectl apply -f YogaBooking/k8s/30-ingress.yaml
-kubectl apply -f YogaBooking/k8s/40-networkpolicies.yaml
+kubectl apply -f k8s/00-namespace.yaml
+kubectl apply -f k8s/10-postgres.yaml
+kubectl apply -f k8s/20-class-service.yaml
+kubectl apply -f k8s/21-booking-service.yaml
+kubectl apply -f k8s/30-ingress.yaml
+kubectl apply -f k8s/40-networkpolicies.yaml
+kubectl -n yoga-booker get pods
 ```
 
 # Adding IP address of the services to /etc/hosts so the local URLs work

@@ -6,17 +6,17 @@ from typing import Optional, List
 import psycopg2
 from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extras import register_uuid  # add this to fix psycopg2.ProgrammingError: can't adapt type 'UUID'
-register_uuid()  # (global registration)
-from fastapi import FastAPI, HTTPException, Header
+register_uuid() # (global uuid registration)
+from fastapi import FastAPI, HTTPException, Header # easy REST
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
-# --- config ---
+# config
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://yoga:yoga@postgres:5432/yoga")
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "changeme")
 
-# --- db pool ---
+# db
 pool: Optional[SimpleConnectionPool] = None
 
 app = FastAPI(title="Class Service", version="1.0.1")
@@ -24,7 +24,7 @@ app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
-# --- models ---
+# models
 class ClassCreate(BaseModel):
     title: str
     instructor: str
@@ -42,7 +42,7 @@ class ClassOut(BaseModel):
     capacity: int
     available_seats: int
 
-# --- lifecycle ---
+# lifecycle
 @app.on_event("startup")
 def startup():
     global pool
@@ -54,11 +54,12 @@ def shutdown():
     if pool:
         pool.closeall()
 
-# --- http ---
+# health
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
+# HTML
 @app.get("/")
 def root():
     return HTMLResponse(
@@ -124,7 +125,7 @@ def admin_page():
 """
     )
 
-# --- API ---
+# API
 @app.get("/classes", response_model=List[ClassOut])
 def list_classes():
     conn = pool.getconn()

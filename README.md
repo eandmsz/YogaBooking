@@ -17,22 +17,23 @@ IMAGE=$DOCKER_USER/yoga-class-service:1.0.0
 docker build -t $IMAGE .
 docker push $IMAGE
 
-cd ../booking-service
+cd
+cd YogaBooking/services/booking-service
 IMAGE=$DOCKER_USER/yoga-booking-service:1.0.0
 docker build -t $IMAGE .
 docker push $IMAGE
 ```
 
-## Kubernetes deploy (namespace, DB, services, ingress, policies)
-
+# Kubernetes deploy (namespace, DB, services, ingress, policies)
+# Note: 20 & 21 downloads the images we have uploaded above
+```
 kubectl apply -f k8s/00-namespace.yaml
 kubectl apply -f k8s/10-postgres.yaml
-# Edit images in 20/21 manifests to match your Docker Hub username
 kubectl apply -f k8s/20-class-service.yaml
 kubectl apply -f k8s/21-booking-service.yaml
 kubectl apply -f k8s/30-ingress.yaml
 kubectl apply -f k8s/40-networkpolicies.yaml
-
+```
 
 ## Access
 

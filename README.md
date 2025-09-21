@@ -25,7 +25,7 @@ docker push $IMAGE
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
-# Note: 20 & 21 downloads the images we have uploaded above
+Note: 20 & 21 downloads the images we have uploaded above
 ```
 kubectl apply -f k8s/00-namespace.yaml
 kubectl apply -f k8s/10-postgres.yaml

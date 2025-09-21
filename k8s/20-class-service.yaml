@@ -13,7 +13,7 @@ labels: {app: class-service}
 spec:
 containers:
 - name: app
-image: docker.io/YOUR_DOCKERHUB_USERNAME/yoga-class-service:1.0.0
+image: docker.io/eandmsz/yoga-class-service:1.0.0
 ports:
 - containerPort: 8000
 env:

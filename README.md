@@ -45,9 +45,9 @@ kubectl -n yoga-booker logs -f deploy/booking-service
 ```
 Redeploying services with an updated image (after pushing the updated version to Dockerhub)
 ```
-kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/yoga-class-service:1.0.2
+kubectl -n yoga-booker set image deploy/class-service app=docker.io/eandmsz/class-service:1.0.2
 kubectl -n yoga-booker rollout status deploy/class-service
-kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/yoga-booking-service:1.0.2
+kubectl -n yoga-booker set image deploy/booking-service app=docker.io/eandmsz/booking-service:1.0.2
 kubectl -n yoga-booker rollout status deploy/booking-service
 ```
 

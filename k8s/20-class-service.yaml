@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: docker.io/eandmsz/yoga-class-service:1.0.0
+          image: docker.io/eandmsz/class-service:1.0.3
           ports:
             - containerPort: 8000
           env:

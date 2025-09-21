@@ -8,8 +8,7 @@ The other books participants and calls the class service to reserve seats.
 ```
 docker login -u eandmsz
 cd
-git clone https://github.com/eandmsz/YogaBooking
-cd YogaBooking
+git clone https://github.com/eandmsz/YogaBooking;cd YogaBooking
 
 docker build -t docker.io/eandmsz/booking-service:2.0.0 services/booking-service
 docker push docker.io/eandmsz/booking-service:2.0.0

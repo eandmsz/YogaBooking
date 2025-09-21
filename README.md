@@ -5,7 +5,7 @@ One service manages yoga classes (create/list/reserve/release).
 The other books participants and calls the class service to reserve seats.
 Both expose a very simple web UI (no frameworks, just HTML + fetch).
 
-# Build & push DOCKER images
+# Build & push Docker images
 ```
 cd
 git clone https://github.com/eandmsz/YogaBooking

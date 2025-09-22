@@ -19,7 +19,7 @@ docker push docker.io/eandmsz/class-service:2.0.0
 ```
 
 # Kubernetes deploy (namespace, DB, services, ingress, policies)
-Note: 20 & 21 downloads the images we have uploaded above
+Note: 20-21-22 downloads the images we have uploaded above
 ```
 minikube status
 minikube start
